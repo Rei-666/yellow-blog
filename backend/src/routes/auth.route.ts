@@ -16,12 +16,10 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 }));
 
 passport.serializeUser((user, done) => {
-  console.log(user);
   done(null, (user as User).id);
 });
 
 passport.deserializeUser((id, done) => {
-  console.log(id);
   UserModel.findById(id, (err: CallbackError, user: User) => {
     done(err, user);
   });
