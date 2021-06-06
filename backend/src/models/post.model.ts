@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
+import mongoose, { PaginateModel } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import { BlogPost } from '../interfaces';
 
 const { Schema } = mongoose;
 
-const blogSchema = new Schema<BlogPost>({
+const blogSchema = new Schema({
   title: String,
   author: {
     type: Schema.Types.ObjectId,
@@ -17,8 +17,8 @@ const blogSchema = new Schema<BlogPost>({
   },
 });
 
-blogSchema.plugin((mongoosePaginate as any));
+blogSchema.plugin(mongoosePaginate);
 
-const blogPost = mongoose.model<BlogPost>('Posts', blogSchema);
+const blogPost: PaginateModel<BlogPost> = mongoose.model<BlogPost, PaginateModel<BlogPost>>('Posts', blogSchema);
 
 export default blogPost;

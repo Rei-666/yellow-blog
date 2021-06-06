@@ -2,11 +2,12 @@ import express from 'express';
 import { User } from '../interfaces';
 import { Post } from '../models';
 import { isAuthed } from '../middlewares';
+import { paginationOptions } from '../db';
 
 const router = express.Router();
 
 router.get('/posts', isAuthed, (req, res) => {
-  Post.find({ author: (req.user as User).id }).sort({ date: 'desc' }).limit(5).exec((err, posts) => {
+  Post.paginate({ author: (req.user as User).id }, { ...paginationOptions, sort: { date: 'desc' } }, (err, posts) => {
     res.json(posts);
   });
 });
