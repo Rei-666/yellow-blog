@@ -1,4 +1,4 @@
-import Post from './post.model';
-import User from './user.model';
+import PostModel from './post.model';
+import UserModel from './user.model';
 
-export { Post, User };
+export { PostModel, UserModel };
