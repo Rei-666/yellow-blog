@@ -1,15 +1,16 @@
 import { Router } from 'express';
-import { Post } from '../models';
+import { PostModel } from '../models';
 import { User } from '../interfaces';
+import { isAuthed } from '../middlewares';
 
 const router = Router();
 
-router.get('/profile', (req, res) => {
+router.get('/profile', isAuthed, (req, res) => {
   res.json({ user: req.user });
 });
 
-router.get('/profile/posts', (req, res) => {
-  Post.find({ author: (req.user as User).id }, (err, posts) => {
+router.get('/profile/posts', isAuthed, (req, res) => {
+  PostModel.find({ author: (req.user as User).id }, (err, posts) => {
     res.json(posts);
   });
 });
