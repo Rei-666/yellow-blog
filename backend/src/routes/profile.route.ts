@@ -6,7 +6,7 @@ import { isAuthed } from '../middlewares';
 const router = Router();
 
 router.get('/profile', isAuthed, (req, res) => {
-  res.json({ user: req.user });
+  res.json({ logged: true, user: req.user });
 });
 
 router.get('/profile/posts', isAuthed, (req, res) => {
