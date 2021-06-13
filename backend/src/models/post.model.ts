@@ -10,7 +10,7 @@ const blogSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Users',
   },
-  body: String,
+  body: Schema.Types.Mixed,
   date: {
     type: Date,
     default: Date.now,
