@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 import MongoStore from 'connect-mongo';
 import expressSession from 'express-session';
+import cors from 'cors';
 import {
   DB_PASSWORD, DB_USERNAME, DB_DATABASE,
 } from './config';
@@ -10,9 +11,13 @@ import router from './routes';
 
 const mongoUrl = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.bgjio.mongodb.net/${DB_DATABASE}?retryWrites=true&w=majority`;
 const app = express();
-const port = 3000;
+const port = 41960;
 
 app.use(morgan('tiny'));
+app.use(cors({
+  origin: ['http://localhost:3000'],
+  credentials: true,
+}));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
