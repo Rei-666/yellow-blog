@@ -7,6 +7,7 @@ import { Editor, Login, Main } from './views';
 import './index.scss';
 import { UserContextInterface } from './interfaces';
 import { UserContext } from './contexts';
+import { BASE_URL } from './config';
 
 const App = () => {
   const [context, setContext] = useState<UserContextInterface>({ logged: false });
@@ -24,7 +25,7 @@ const App = () => {
         return (body?.user ? body : { logged: false });
       };
 
-      fetchData('http://localhost:41960/api/profile')
+      fetchData(`${BASE_URL}/api/profile`)
         .then((newContext) => {
           setContext(newContext);
           if (!newContext.logged) Cookies.remove('logged');

@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { UserContext } from '../../contexts';
+import { BASE_URL } from '../../config';
 
 interface LoginDataInterface {
   username: string,
@@ -26,7 +27,7 @@ const LoginView = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:41960/api/login', {
+      const response = await fetch(`${BASE_URL}/api/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

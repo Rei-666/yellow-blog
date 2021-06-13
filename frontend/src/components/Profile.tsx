@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { UserContextInterface } from '../interfaces';
+import { BASE_URL } from '../config';
 
 type ContextSetter = React.Dispatch<React.SetStateAction<UserContextInterface>> | null;
 
@@ -8,7 +9,7 @@ const Profile = ({ context, setContext }: {
   context: UserContextInterface,
   setContext: ContextSetter }) => {
   const logout = async () => {
-    const res = await fetch('http://localhost:41960/api/logout', {
+    const res = await fetch(`${BASE_URL}/api/logout`, {
       method: 'POST',
       credentials: 'include'
     });

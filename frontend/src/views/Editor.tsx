@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw } from 'draft-js';
+import { BASE_URL } from '../config';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 const EditorView = () => {
@@ -10,7 +11,7 @@ const EditorView = () => {
 
   const handleSubmit = async () => {
     const rawState = convertToRaw(editorState.getCurrentContent());
-    const response = await fetch('http://localhost:41960/api/posts', {
+    const response = await fetch(`${BASE_URL}/api/posts`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -19,13 +20,12 @@ const EditorView = () => {
       body: JSON.stringify({ title, body: rawState })
     });
     const parsedData = await response.json();
+    // eslint-disable-next-line no-alert
     if (parsedData?.success) alert('Wstawiłeś post!');
   };
 
   const handleChange = (newState: EditorState) => {
     setEditorState(newState);
-    const contentState = newState.getCurrentContent();
-    console.log(convertToRaw(contentState));
   };
 
   return (
