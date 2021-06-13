@@ -11,11 +11,11 @@ import router from './routes';
 
 const mongoUrl = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.bgjio.mongodb.net/${DB_DATABASE}?retryWrites=true&w=majority`;
 const app = express();
-const port = 41960;
+const port = 4000;
 
 app.use(morgan('tiny'));
 app.use(cors({
-  origin: ['http://localhost:3000'],
+  origin: ['http://localhost:3000', 'https://yellowblog.netlify.app'],
   credentials: true,
 }));
 
