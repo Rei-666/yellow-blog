@@ -1,0 +1,14 @@
+$theme-colors: (
+  "primary": #ffca46,
+  "secondary": #023047
+);
+$link-color: #023047;
+
+.editor {
+  min-height: 40rem;
+  border: 2px solid #023047;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+@import "~bootstrap/scss/bootstrap";
