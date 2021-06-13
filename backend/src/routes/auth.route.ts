@@ -1,10 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 import express from 'express';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcrypt';
 import { CallbackError } from 'mongoose';
-import User from '../interfaces/User.interface';
-import UserModel from '../models/user.model';
+import { User } from '../interfaces';
+import { UserModel } from '../models';
 import { isAuthed } from '../middlewares';
 
 passport.use(new LocalStrategy(async (username, password, done) => {
@@ -22,7 +23,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
   UserModel.findById(id, (err: CallbackError, user: User) => {
     done(err, user);
-  });
+  }).select('-passwordHash');
 });
 
 const router = express.Router();
@@ -31,7 +32,10 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
-  res.json({ logged: true });
+  const user = (req.user as any).toObject();
+  delete user.passwordHash;
+
+  res.json({ logged: true, user });
 });
 
 router.post('/logout', isAuthed, (req, res) => {
