@@ -43,7 +43,7 @@ router.post('/logout', isAuthed, (req, res) => {
   res.json({ success: true });
 });
 
-router.post('/signup', async (req, res) => {
+router.post('/register', async (req, res) => {
   if (req.user) {
     res.json({ error: 'You are already logged in' });
     return;
