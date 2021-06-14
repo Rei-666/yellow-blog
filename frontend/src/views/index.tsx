@@ -1,6 +1,11 @@
 /* eslint-disable import/prefer-default-export */
-import MainView from './Main';
+import Main from './Main';
 import Login from './Login';
 import Editor from './Editor';
+import Help from './Help';
+import Post from './Post';
+import Register from './Register';
 
-export { MainView as Main, Login, Editor };
+export {
+  Main, Login, Editor, Help, Post, Register
+};

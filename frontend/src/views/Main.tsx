@@ -4,13 +4,12 @@ import {
   Container, Row, Col
 } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { convertFromRaw, RawDraftContentState } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html';
 import { UserContext } from '../contexts';
 import { Post, Profile } from '../components';
 import { useFetchWithPagination } from '../hooks';
 import { PostInterface, PostDataInterface } from '../interfaces';
 import { BASE_URL } from '../config';
+import { convertPostBodyObjectToHtml } from '../utils';
 
 const MainView = () => {
   const [page, setPage] = useState<number>(1);
@@ -19,7 +18,7 @@ const MainView = () => {
     `${BASE_URL}/api/posts`,
     page,
   );
-  const [context, setContext] = useContext(UserContext);
+  const [context] = useContext(UserContext);
 
   useEffect(() => {
     if (!isLoading) setPosts((prevPosts) => [...prevPosts!, ...apiResponse!.docs]);
@@ -28,12 +27,9 @@ const MainView = () => {
   const renderPosts = () => {
     if (posts?.length === 0) return 'There are no posts!';
     return posts?.map((post) => {
-      const rawState = convertFromRaw({
-        ...({ entityMap: {}, ...post.body } as unknown as RawDraftContentState),
-      });
-      const htmlBody = stateToHTML(rawState);
+      const htmlBody = convertPostBodyObjectToHtml(post.body);
       return (
-        <Post key={post._id} title={post.title}>
+        <Post author={post.author} key={post._id} title={post.title}>
           {/* eslint-disable-next-line react/no-danger */}
           <div dangerouslySetInnerHTML={{ __html: htmlBody }} />
         </Post>
@@ -55,7 +51,7 @@ const MainView = () => {
           </InfiniteScroll>
         </Col>
         <Col>
-          <Profile context={context} setContext={setContext} />
+          { context?.user && <Profile user={context.user} /> }
         </Col>
       </Row>
     </Container>

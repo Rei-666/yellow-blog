@@ -2,15 +2,23 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { Navbar } from './components';
-import { Editor, Login, Main } from './views';
+import { Modal, Navbar } from './components';
+import {
+  Editor, Help, Login, Main, Post, Register
+} from './views';
 import './index.scss';
-import { UserContextInterface } from './interfaces';
+import { ModalInterface, UserContextInterface } from './interfaces';
 import { UserContext } from './contexts';
 import { BASE_URL } from './config';
 
 const App = () => {
   const [context, setContext] = useState<UserContextInterface>({ logged: false });
+  const [modal, setModal] = useState<ModalInterface>({
+    show: false,
+    handleClose: () => {
+      setModal((oldModal) => ({ ...oldModal, show: false }));
+    }
+  });
 
   useEffect(() => {
     if (Cookies.get('logged') !== undefined) {
@@ -55,7 +63,23 @@ const App = () => {
           <Route path="/createPost">
             <Editor />
           </Route>
+          <Route path="/help">
+            <Help />
+          </Route>
+          <Route path="/posts/:id">
+            <Post />
+          </Route>
+          <Route path="/register">
+            <Register setModal={setModal} />
+          </Route>
         </Switch>
+        <Modal
+          show={modal.show}
+          handleClose={modal.handleClose}
+          title={modal.title}
+        >
+          {modal.children}
+        </Modal>
       </Router>
     </UserContext.Provider>
   );

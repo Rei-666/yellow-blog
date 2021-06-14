@@ -1,5 +1,10 @@
 import { PaginationInterface } from './Pagination';
 
+interface Author {
+  _id: string
+  username: string
+}
+
 export interface PostDataInterface extends PaginationInterface {
   docs: PostInterface[];
 }
@@ -9,6 +14,6 @@ export interface PostInterface {
   body: {
     blocks: any
   };
-  author: string;
+  author: Author;
   date: string;
 }
