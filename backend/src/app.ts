@@ -23,12 +23,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-  app.use(expressSession({
+  const sessionSettings = {
+    cookie: {
+      sameSite: false,
+      secure: false,
+    },
     secret: 'dog',
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl }),
-  }));
+  };
+
+  if (app.get('env') === 'production') {
+    app.set('trust proxy', 1);
+    sessionSettings.cookie.secure = true;
+  }
+
+  app.use(expressSession(sessionSettings));
 
   app.use('/api', router);
 
