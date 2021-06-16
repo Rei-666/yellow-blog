@@ -30,7 +30,10 @@ const EditorView = () => {
 
   return (
     <Container className="d-flex flex-column align-content-center">
-      <Form>
+      <Form onSubmit={(e) => {
+        e.preventDefault();
+      }}
+      >
         <Form.Group>
           <Form.Label>Title</Form.Label>
           <Form.Control value={title} onChange={(e) => setTitle(e.target.value)} type="text" />
