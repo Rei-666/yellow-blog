@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import MongoStore from 'connect-mongo';
-import expressSession from 'express-session';
+import expressSession, { SessionOptions } from 'express-session';
 import cors from 'cors';
 import {
   DB_PASSWORD, DB_USERNAME, DB_DATABASE,
@@ -23,9 +23,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-  const sessionSettings = {
+  const sessionSettings: SessionOptions = {
     cookie: {
-      sameSite: false,
+      sameSite: 'none',
       secure: false,
     },
     secret: 'dog',
@@ -36,7 +36,7 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }).
 
   if (app.get('env') === 'production') {
     app.set('trust proxy', 1);
-    sessionSettings.cookie.secure = true;
+    sessionSettings.cookie!.secure = true;
   }
 
   app.use(expressSession(sessionSettings));
