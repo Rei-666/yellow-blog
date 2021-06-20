@@ -23,8 +23,7 @@ const PostView = () => {
 
   return (
     <Container>
-      {/* eslint-disable-next-line react/no-danger */}
-      {isLoading ? 'Loading...' : <Post author={post!.author} title={post?.title}>{renderHtml()}</Post>}
+      {isLoading ? 'Loading...' : <Post author={post!.author} title={post?.title} date={post?.date}>{renderHtml()}</Post>}
     </Container>
   );
 };
