@@ -25,7 +25,7 @@ app.use(express.json());
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
   const sessionSettings: SessionOptions = {
     cookie: {
-      sameSite: 'none',
+      sameSite: 'lax',
       secure: false,
     },
     secret: 'dog',
@@ -36,6 +36,7 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }).
 
   if (app.get('env') === 'production') {
     app.set('trust proxy', 1);
+    sessionSettings.cookie!.sameSite = 'none';
     sessionSettings.cookie!.secure = true;
   }
 
