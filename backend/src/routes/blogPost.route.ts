@@ -16,6 +16,39 @@ router.get('/posts/:id/', (req, res) => {
     });
 });
 
+router.put('/posts/:id/', async (req, res) => {
+  const { id } = req.params;
+  const author = (req.user as User).id;
+  const post = await PostModel.findById(id).exec();
+  if (!post) {
+    res.sendStatus(404);
+    return;
+  }
+  if (!post!.author.equals(author)) {
+    res.sendStatus(401);
+    return;
+  }
+  const { title, body } = req.body;
+  await post!.updateOne({ title, body });
+  res.json({ success: true, id: post.id });
+});
+
+router.delete('/posts/:id/', async (req, res) => {
+  const { id } = req.params;
+  const author = (req.user as User).id;
+  const post = await PostModel.findById(id).exec();
+  if (!post) {
+    res.sendStatus(404);
+    return;
+  }
+  if (!post!.author.equals(author)) {
+    res.sendStatus(401);
+    return;
+  }
+  await post.delete();
+  res.json({ success: true });
+});
+
 router.get('/posts', (req, res) => {
   const { page } = req.query;
 
@@ -31,7 +64,7 @@ router.get('/posts', (req, res) => {
 router.post('/posts', isAuthed, (req, res) => {
   const newPost = new PostModel({ ...req.body, author: (req.user as User).id });
   newPost.save();
-  res.json({ success: true });
+  res.json({ success: true, id: newPost.id });
 });
 
 export default router;

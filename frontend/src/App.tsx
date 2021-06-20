@@ -69,6 +69,9 @@ const App = () => {
           <Route path="/posts/:id">
             <Post />
           </Route>
+          <Route path="/edit/:id">
+            <Editor />
+          </Route>
           <Route path="/register">
             <Register setModal={setModal} />
           </Route>

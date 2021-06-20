@@ -25,7 +25,7 @@ const MainView = () => {
   }, [apiResponse, isLoading]);
 
   const renderPosts = () => {
-    if (posts?.length === 0) return 'There are no posts!';
+    if (!isLoading && posts?.length === 0) return 'There are no posts!';
     return posts?.map((post) => {
       const htmlBody = convertPostBodyObjectToHtml(post.body);
       return (
