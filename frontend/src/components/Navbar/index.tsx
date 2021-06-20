@@ -7,6 +7,7 @@ import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 import NavbarToggle from 'react-bootstrap/esm/NavbarToggle';
 import { UserContext } from '../../contexts';
 import { BASE_URL } from '../../config';
+import LoginAndRegister from './LoginAndRegister';
 
 const CustomNavbar = () => {
   const [context, setContext] = useContext(UserContext);
@@ -27,17 +28,18 @@ const CustomNavbar = () => {
         <NavbarToggle aria-controls="navbar-cool" />
         <NavbarCollapse id="navbar-cool">
           <Nav className="mr-auto">
-            {context.user && (
-            <Nav.Link as={Link} to="/createPost">
-              Create a post
-            </Nav.Link>
+            {context.user ? (
+              <>
+                <Nav.Link as={Link} to="/createPost">
+                  Create a post
+                </Nav.Link>
+                <Nav.Link className="d-block d-sm-none" onClick={logout}>
+                  Logout
+                </Nav.Link>
+              </>
+            ) : (
+              <LoginAndRegister className="d-sm-none" />
             )}
-            <Nav.Link as={Link} to="/help">
-              Help
-            </Nav.Link>
-            <Nav.Link className="d-block d-sm-none" onClick={logout}>
-              Logout
-            </Nav.Link>
           </Nav>
           <Nav className="justify-content-end d-none d-sm-flex">
             {context.user ? (
@@ -45,16 +47,12 @@ const CustomNavbar = () => {
                 <Dropdown.Toggle>
                   {context.user.username}
                 </Dropdown.Toggle>
-
                 <Dropdown.Menu align="right">
                   <Dropdown.Item as="button" onClick={logout}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             ) : (
-              <>
-                <Nav.Link as={Link} to="/login" className="mx-3">Login</Nav.Link>
-                <Nav.Link as={Link} to="/register">Register</Nav.Link>
-              </>
+              <LoginAndRegister />
             )}
           </Nav>
         </NavbarCollapse>
