@@ -29,7 +29,7 @@ const MainView = () => {
     return posts?.map((post) => {
       const htmlBody = convertPostBodyObjectToHtml(post.body);
       return (
-        <Post author={post.author} key={post._id} title={post.title}>
+        <Post author={post.author} key={post._id} title={post.title} date={post.date}>
           {/* eslint-disable-next-line react/no-danger */}
           <div dangerouslySetInnerHTML={{ __html: htmlBody }} />
         </Post>
