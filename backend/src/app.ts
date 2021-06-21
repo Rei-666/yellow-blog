@@ -4,18 +4,16 @@ import morgan from 'morgan';
 import MongoStore from 'connect-mongo';
 import expressSession, { SessionOptions } from 'express-session';
 import cors from 'cors';
-import {
-  DB_PASSWORD, DB_USERNAME, DB_DATABASE,
-} from './config';
+import config from './config';
 import router from './routes';
 
-const mongoUrl = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.bgjio.mongodb.net/${DB_DATABASE}?retryWrites=true&w=majority`;
+const mongoUrl = config.DB_URL;
 const app = express();
 const port = 4000;
 
 app.use(morgan('tiny'));
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://yellowblog.netlify.app'],
+  origin: config.ORIGIN,
   credentials: true,
 }));
 
@@ -28,7 +26,7 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }).
       sameSite: 'lax',
       secure: false,
     },
-    secret: 'dog',
+    secret: config.SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl }),
