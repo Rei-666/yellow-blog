@@ -6,6 +6,7 @@ import expressSession, { SessionOptions } from 'express-session';
 import cors from 'cors';
 import config from './config';
 import router from './routes';
+import { addYellow } from './middlewares';
 
 const mongoUrl = config.DB_URL;
 const app = express();
@@ -19,6 +20,8 @@ app.use(cors({
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+app.use(addYellow);
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
   const sessionSettings: SessionOptions = {
