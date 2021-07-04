@@ -11,8 +11,8 @@ router.get('/posts/:id/', (req, res) => {
   const { id } = req.params;
   PostModel.findById(id)
     .populate('author', '-passwordHash')
-    .exec((err: CallbackError, post: BlogPost | null) => {
-      res.json(post);
+    .exec((err: CallbackError, data: BlogPost | null) => {
+      res.json({ data });
     });
 });
 
@@ -56,8 +56,8 @@ router.get('/posts', (req, res) => {
 
   PostModel.paginate({}, {
     ...paginationOptions, offset, sort: { date: 'desc' }, populate: { path: 'author', select: '-passwordHash' },
-  }, (err, posts) => {
-    res.json(posts);
+  }, (err, data) => {
+    res.json({ data });
   });
 });
 

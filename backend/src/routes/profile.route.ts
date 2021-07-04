@@ -10,8 +10,8 @@ router.get('/profile', isAuthed, (req, res) => {
 });
 
 router.get('/profile/posts', isAuthed, (req, res) => {
-  PostModel.find({ author: (req.user as User).id }, (err, posts) => {
-    res.json(posts);
+  PostModel.find({ author: (req.user as User).id }, (err, data) => {
+    res.json({ data });
   });
 });
 
