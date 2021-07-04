@@ -28,6 +28,6 @@ try {
   process.exit(1);
 }
 
-const CheckedEnvVariables: EnvVariables = { DB_URL, SECRET, ORIGIN: ORIGIN || 'localhost:3000' };
+const CheckedEnvVariables: EnvVariables = { DB_URL, SECRET, ORIGIN: ORIGIN || 'http://localhost:3000' };
 
 export default CheckedEnvVariables;
