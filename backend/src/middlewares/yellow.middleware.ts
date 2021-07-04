@@ -5,7 +5,16 @@ const addYellow = (req: Request, res: Response, next: NextFunction) => {
   const color = randomcolor({
     hue: 'yellow',
   });
-  res.append('Color', color);
+
+  const original = res.json;
+
+  function jsonHook(this: any, json: any) {
+    const newJson = json;
+    newJson.color = color;
+    return original.call(this, newJson);
+  }
+
+  res.json = jsonHook;
   next();
 };
 

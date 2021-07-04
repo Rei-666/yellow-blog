@@ -21,8 +21,6 @@ app.use(cors({
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(addYellow);
-
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
   const sessionSettings: SessionOptions = {
     cookie: {
@@ -42,6 +40,8 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }).
   }
 
   app.use(expressSession(sessionSettings));
+
+  app.use(addYellow);
 
   app.use('/api', router);
 
