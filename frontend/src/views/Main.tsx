@@ -7,35 +7,32 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { UserContext } from '../contexts';
 import { Post, Profile } from '../components';
 import { useFetchWithPagination } from '../hooks';
-import { PostInterface, PostDataInterface } from '../interfaces';
+import { PostInterface, PaginatedPostsResponseInterface } from '../interfaces';
 import { BASE_URL } from '../config';
 import { convertPostBodyObjectToHtml } from '../utils';
 
 const MainView = () => {
   const [page, setPage] = useState<number>(1);
   const [posts, setPosts] = useState<Array<PostInterface>>([]);
-  const [isLoading, apiResponse] = useFetchWithPagination<PostDataInterface>(
+  const [isLoading, apiResponse] = useFetchWithPagination<PaginatedPostsResponseInterface>(
     `${BASE_URL}/api/posts`,
     page,
   );
   const [context] = useContext(UserContext);
 
   useEffect(() => {
-    if (!isLoading) setPosts((prevPosts) => [...prevPosts!, ...apiResponse!.docs]);
+    if (!isLoading) setPosts((prevPosts) => [...prevPosts!, ...apiResponse!.data.docs]);
   }, [apiResponse, isLoading]);
 
-  const renderPosts = () => {
-    if (!isLoading && posts?.length === 0) return 'There are no posts!';
-    return posts?.map((post) => {
-      const htmlBody = convertPostBodyObjectToHtml(post.body);
-      return (
-        <Post author={post.author} key={post._id} title={post.title} date={post.date}>
-          {/* eslint-disable-next-line react/no-danger */}
-          <div dangerouslySetInnerHTML={{ __html: htmlBody }} />
-        </Post>
-      );
-    });
-  };
+  const renderPosts = () => posts?.map((post) => {
+    const htmlBody = convertPostBodyObjectToHtml(post.body);
+    return (
+      <Post author={post.author} key={post._id} title={post.title} date={post.date}>
+        {/* eslint-disable-next-line react/no-danger */}
+        <div dangerouslySetInnerHTML={{ __html: htmlBody }} />
+      </Post>
+    );
+  });
 
   return (
     <Container className="mt-5">
@@ -44,7 +41,7 @@ const MainView = () => {
           <InfiniteScroll
             dataLength={posts.length}
             next={() => setPage((prevPageNumber) => prevPageNumber + 1)}
-            hasMore={apiResponse ? apiResponse!.hasNextPage : false}
+            hasMore={apiResponse ? apiResponse!.data.hasNextPage : false}
             loader={<h4>Loading...</h4>}
           >
             {renderPosts()}

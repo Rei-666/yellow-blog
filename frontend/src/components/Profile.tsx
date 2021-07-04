@@ -1,7 +1,8 @@
 import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Link } from 'react-router-dom';
-import { PostInterface, UserInterface } from '../interfaces';
+import { FaSpinner } from 'react-icons/fa';
+import { MultiplePostsResponseInterface, UserInterface } from '../interfaces';
 import { useFetch } from '../hooks';
 import { BASE_URL } from '../config';
 
@@ -11,17 +12,23 @@ const fetchOptions: RequestInit = {
 
 const Profile = ({ user } : { user: UserInterface }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isLoading, posts] = useFetch<Array<PostInterface>>(`${BASE_URL}/api/profile/posts`, fetchOptions);
+  const [isLoading, response] = useFetch<MultiplePostsResponseInterface>(`${BASE_URL}/api/profile/posts`, fetchOptions);
 
-  // eslint-disable-next-line no-underscore-dangle
-  const renderPostTitles = () => posts?.map((post) => <li key={post._id}><Link key={post._id} to={`/posts/${post._id}`}>{post.title}</Link></li>);
+  const renderPostTitles = () => {
+    // eslint-disable-next-line no-underscore-dangle
+    if (response) return response.data.map((post) => <li key={post._id}><Link key={post._id} to={`/posts/${post._id}`}>{post.title}</Link></li>);
+    return <FaSpinner />;
+  };
 
   return (
     <div className="d-none d-lg-block">
       <h4>{user.username}</h4>
-      <ul>
-        {renderPostTitles()}
-      </ul>
+      {isLoading ? (<FaSpinner />) : (
+        <ul>
+          {renderPostTitles()}
+        </ul>
+      )}
+
     </div>
   );
 };

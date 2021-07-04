@@ -1,7 +1,7 @@
-import { PostInterface } from './Post';
+import { PostResponseInterface } from './Post';
 
 export interface UserInterface {
-  posts?: (PostInterface)[] | null;
+  posts?: (PostResponseInterface)[] | null;
   _id: string;
   username: string;
 }

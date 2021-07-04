@@ -4,7 +4,7 @@ import { Container, Button, Modal } from 'react-bootstrap';
 import { BASE_URL } from '../config';
 import { useFetch } from '../hooks';
 import { Post } from '../components';
-import { PostInterface } from '../interfaces';
+import { PostResponseInterface } from '../interfaces';
 import { convertPostBodyObjectToHtml } from '../utils';
 import { UserContext } from '../contexts';
 
@@ -15,14 +15,14 @@ interface ProfileParams {
 const PostView = () => {
   const { id } = useParams<ProfileParams>();
   const postUrl = `${BASE_URL}/api/posts/${id}`;
-  const [isLoading, post] = useFetch<PostInterface>(postUrl);
+  const [isLoading, post] = useFetch<PostResponseInterface>(postUrl);
   const [show, setShow] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [context] = useContext(UserContext);
   const history = useHistory();
 
   const renderHtml = () => {
-    const htmlBody = convertPostBodyObjectToHtml(post!.body);
+    const htmlBody = convertPostBodyObjectToHtml(post!.data.body);
     // eslint-disable-next-line react/no-danger
     return <div dangerouslySetInnerHTML={{ __html: htmlBody }} />;
   };
@@ -58,7 +58,7 @@ const PostView = () => {
 
   return (
     <Container>
-      {isLoading ? 'Loading...' : <Post author={post!.author} title={post?.title} date={post?.date}>{renderHtml()}</Post>}
+      {isLoading ? 'Loading...' : <Post author={post!.data.author} title={post?.data.title} date={post?.data.date}>{renderHtml()}</Post>}
       {context.user && (
       <div className="d-flex">
         <Link to={`/edit/${id}`}>

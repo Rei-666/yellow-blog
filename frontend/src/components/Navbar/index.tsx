@@ -22,7 +22,7 @@ const CustomNavbar = () => {
   };
 
   return (
-    <Navbar bg="primary" expand="sm" className="mb-5">
+    <Navbar expand="sm" className="mb-5">
       <Container>
         <NavbarBrand as={Link} to="/">Yellow Blog</NavbarBrand>
         <NavbarToggle aria-controls="navbar-cool" />

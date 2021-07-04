@@ -1,8 +1,31 @@
+$primary: #ffca46;
+
+$animation-duration: 0.7s;
+
+:root {
+  --primary: $primary;
+}
+
 $theme-colors: (
-  "primary": #ffca46,
+  "primary": $primary,
   "secondary": #023047
 );
 $link-color: #023047;
+
+.navbar {
+  background-color: var(--primary) !important;
+  transition: background-color $animation-duration;
+}
+
+.btn-primary {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  transition: background-color $animation-duration, border-color $animation-duration !important;
+}
+
+.btn-primary:hover {
+  background-color: $primary !important;
+}
 
 .editor {
   min-height: 40rem;
