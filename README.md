@@ -3,9 +3,6 @@ It is a simple blog application, that features user authentication, blog post ed
 
 It uses React on frontend and ExpressJS with MongoDB on backend.
 
-### Live version:
-https://yellowblog.netlify.app/
-
 ### Why yellow?
 I just like yellow color :)
 
